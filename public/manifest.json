@@ -1,0 +1,43 @@
+{
+  "name": "Cars By Rajat — Nagpur Certified Pre-Owned Fleet",
+  "short_name": "Cars By Rajat",
+  "description": "Nagpur's #1 Certified Pre-Owned Luxury & Fleet Dealership. 140-point inspected cars with direct showroom pricing.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1329",
+  "theme_color": "#1d4ed8",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Cars",
+      "short_name": "Inventory",
+      "description": "View 140-point certified cars in Nagpur",
+      "url": "/used-cars/nagpur",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Admin Deck",
+      "short_name": "Admin",
+      "description": "Dealership CRM & Fleet CMS",
+      "url": "/admin/login",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["shopping", "business", "lifestyle"]
+}

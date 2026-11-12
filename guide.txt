@@ -1,0 +1,876 @@
+================================================================================
+CARS BY RAJAT (CBR) — ENTERPRISE DIGITAL SHOWROOM & DEALERSHIP CRM
+Comprehensive System Architecture, Technical Specification & Operations Guide
+Version: 2.0.0 (TypeScript Modernization & Production Grade Release)
+Powered by: NeuroX Automotive Intelligence Platform
+================================================================================
+
+TABLE OF CONTENTS:
+1. Executive Overview & System Vision
+2. Technology Stack & Modernization Architecture
+3. Complete Directory & Folder Structure Breakdown
+4. Environment Configuration & Installation Requirements
+5. Database Architecture & SQLite Data Models
+6. Complete REST API Specifications & Contracts
+   6.1. Public Client & Storefront APIs
+   6.2. Customer Self-Service & Negotiation APIs
+   6.3. AI Auto-Advisor Chatbot API
+   6.4. Protected Admin Command Deck & CRM APIs
+   6.5. Programmatic SEO, OpenGraph & Data Export Endpoints
+7. Role-Based Access Control (RBAC) & Security Architecture
+8. Core User Workflows & Front-of-House Systems
+   8.1. Luxury Storefront & Horizontal Vehicle Carousel
+   8.2. Confidential Pricing Unlock & Anti-Fake Mobile Heuristic
+   8.3. Vehicle Dossier & Certified Showroom Inspection Matrix
+   8.4. Dynamic Gallery: 3D Reel-Style Showcase & AI Taste Radar
+   8.5. Interactive Price Negotiation & Counteroffer Desk
+   8.6. Buyer Self-Service Hub & In-App Notification Stream
+9. Enterprise Dealership Management & CRM Workflows
+   9.1. KPI Dashboard & Live Revenue Analytics
+   9.2. Leads Pipeline CRM & CSV / Excel Data Export
+   9.3. Individual Lead Dossier, Customer Insights & Follow-up Scheduler
+   9.4. Customer Enquiries Management Deck
+   9.5. Vehicle Fleet CMS & Inspection Checkpoint Customizer
+   9.6. Team Management, Staff Provisioning & Permission Matrix
+   9.7. Vehicle & Customer Verification Center (RC, Insurance, PUC)
+   9.8. Security Audit Trail & Immutable Activity Logs
+   9.9. Dealership System Settings & DPDP Compliance
+10. Build, Run & Deployment Operations
+11. Performance Optimization, Caching & Scalability
+12. Troubleshooting & Maintenance Playbook
+
+================================================================================
+1. EXECUTIVE OVERVIEW & SYSTEM VISION
+================================================================================
+Cars By Rajat (CBR) is an enterprise-grade digital showroom, lead pipeline, price
+negotiation engine, and dealership CRM tailored specifically for premium
+pre-owned automotive retailers. Headquartered in Nagpur, Maharashtra, CBR connects
+discerning vehicle buyers with certified pre-owned luxury vehicles through an
+immersive digital-first purchasing journey.
+
+Key System Capabilities:
+- Full-Stack TypeScript Architecture with React 19 TSX front-end and Express 5 backend.
+- Single-Port Unified Runtime: Express seamlessly proxies Vite HMR in development and
+  serves the high-performance compiled Vite production bundle in production.
+- Soft-Light Corporate & Automotive Luxury Design System:
+  * Primary Canvas: #F7F9FC (Soft off-white / ice-blue tint)
+  * Surface & Cards: #FFFFFF (Pure white) with translucent glassmorphism (rgba(255, 255, 255, 0.85) + blur(12px))
+  * Ambient Mesh Gradient: Radial wash blending #FFFFFF, #EEF4FF, and #DCE8FC
+  * Primary Brand Accent: #1D5CE5 (Vibrant Royal Blue) / Hover: #1547B8
+  * Secondary Accent: #EBF2FF (Soft Sky Blue) with #1D5CE5 text and icons
+  * Success / WhatsApp: #25D366 (WhatsApp Green) / Trust Badge: #0F9D58 on #E8F8F0
+  * Typography Hierarchy: #0F172A (Deep Navy Slate), #475569 (Cool Muted Slate), #64748B (Muted Slate)
+  * Soft UI Rules: 18px radii, 1px solid #E2E8F0 hairline borders, diffused shadows (0 10px 30px -10px rgba(15, 23, 42, 0.06))
+  * Components: Pill-shaped CTAs (border-radius: 9999px) with blue glow, 48px x 48px icon boxes
+- Anti-Fake Indian Mobile Validation: Strict heuristic engine blocking repetitive digits,
+  fictitious series, invalid operator codes, and disposable entries.
+- Certified Showroom Inspection Matrix: Comprehensive engine, transmission, electrical,
+  chassis, tyre tread, and service history transparency without false marketing claims.
+- Scroll Mode Studio: Full-screen mobile-optimized swipe discovery with
+  buttery-smooth touch/mouse gestures, Like shortlisting, and real-time interest tracking.
+- Bilateral Price Negotiation System: End-to-end customer offer submission, vendor
+  counteroffering, discussion thread, and deal finalization.
+- Multi-Tier CRM & RBAC: Role-based permissions for Admin, Sales Manager, Sales Rep,
+  and Inventory Manager with audit logging and customer conversion insights.
+- DPDP 2023 Compliance: Automatic 90-day lead retention cleanup, Grievance Officer
+  disclosures, and user opt-out consent mechanisms.
+
+================================================================================
+2. TECHNOLOGY STACK & MODERNIZATION ARCHITECTURE
+================================================================================
+The platform has been completely re-engineered from legacy zero-dependency vanilla JS
+into a modern, type-safe, modular, and maintainable TypeScript architecture:
+
+Frontend Stack:
+- Framework: React 19 (19.3.1) with StrictMode and Concurrent Mode capabilities.
+- Language: TypeScript 5.8+ with TSX components and strict compiler checking.
+- Bundler & Dev Tooling: Vite 6 / 8 with `@vitejs/plugin-react` and fast HMR.
+- Component Icons: `lucide-react` (high-performance vector icon set).
+- Styling & Design System: Modular CSS variables (`src/styles/main.css`) establishing
+  an automotive luxury light theme, responsive grid systems, and custom animations.
+- State Management: React Context API (`AuthContext`, `CompareContext`) with zero
+  unnecessary third-party state bloat.
+
+Backend Stack:
+- Runtime: Node.js 22+ (LTS recommended: >=22.13.0).
+- Web Framework: Express 5 (`express@5.3.0`) with typed routers and async error handlers.
+- Language: TypeScript executed via `tsx` (TypeScript Execute) for instant native execution.
+- Database: SQLite 3 via Node.js native `node:sqlite` (`DatabaseSync`), offering
+  in-process zero-latency synchronous queries with zero external native C++ build dependencies.
+- Cryptography & Auth: Node.js native `node:crypto` with salted `scrypt` hashing
+  and cryptographic HMAC session signatures.
+- Middleware: `cookie-parser` (for HttpOnly session management) and `cors` (credential-aware).
+
+Search Engine & Programmatic Assets:
+- Dynamic OpenGraph Generator: Programmatic SVG rendering for all vehicle slugs
+  optimized for WhatsApp, Facebook, LinkedIn, and iMessage rich preview cards (1200x630).
+- Programmatic SEO: XML Sitemap (`/sitemap.xml`) indexing all active inventory,
+  plus dynamic `robots.txt` honoring search crawler indexing rules.
+
+================================================================================
+3. COMPLETE DIRECTORY & FOLDER STRUCTURE BREAKDOWN
+================================================================================
+```
+carsbyrajat-standalone/
+├── .env.example               # Template environment configuration
+├── data.db                    # Primary SQLite 3 persistent database file
+├── index.html                 # Single Page Application HTML shell
+├── package.json               # Modernized package manifest (React 19, Express 5, TSX)
+├── package-lock.json          # Dependency lockfile
+├── tsconfig.json              # TypeScript compiler configuration (ES2022, Bundler)
+├── vite.config.ts             # Vite bundler configuration & backend API proxy
+├── guide.txt                  # This comprehensive system documentation
+├── README.md                  # Project overview and quickstart
+│
+├── dist/                      # Production build output (generated by `npm run build`)
+│   ├── index.html             # Minified entry HTML
+│   └── assets/                # Minified and gzipped JS & CSS bundles
+│
+├── public/                    # Static public assets served at root path
+│   ├── favicon.ico            # Showroom shortcut icon
+│   └── uploads/               # Local vehicle imagery and customer attachments
+│
+├── server/                    # Modern TypeScript Backend Architecture
+│   ├── index.ts               # Server entry point; initializes DB & binds port 3000
+│   ├── app.ts                 # Express app configuration, static assets & Vite integration
+│   ├── config.ts              # Global environment variables, default settings & SEO data
+│   ├── db.ts                  # SQLite database connection, schema, migrations, crypto & helpers
+│   ├── types.ts               # Backend TypeScript data interfaces & API contracts
+│   └── routes/                # Modular Express Route Handlers
+│       ├── publicApi.ts       # Public showroom endpoints (cars, unlock, test drive, chatbot)
+│       ├── adminApi.ts        # Protected CRM, team, inventory & audit endpoints (RBAC)
+│       └── seoRoutes.ts       # Dynamic OpenGraph SVG, sitemap.xml, robots.txt, CSV exports
+│
+└── src/                       # Modern TypeScript + TSX React 19 Frontend Architecture
+    ├── main.tsx               # Client entry point; mounts React DOM root
+    ├── App.tsx                # Client-side router, layout frame & navigation routes
+    ├── vite-env.d.ts          # Vite client environment declarations
+    │
+    ├── types/                 # Shared Frontend TypeScript Interfaces
+    │   └── index.ts           # Car, Lead, Negotiation, Enquiry, Team, Settings types
+    │
+    ├── api/                   # API Communication Layer
+    │   └── client.ts          # Strongly-typed fetch client for public & admin endpoints
+    │
+    ├── context/               # Global React State Providers
+    │   ├── AuthContext.tsx    # Unlocked phone & admin authentication states
+    │   └── CompareContext.tsx # Multi-vehicle comparison selection state
+    │
+    ├── styles/                # Global Design System
+    │   └── main.css           # Luxury light theme tokens, cards, buttons, badges, tables
+    │
+    ├── components/            # Reusable UI Components
+    │   ├── Navbar.tsx         # 3-zone luxury header with search, WhatsApp & mobile drawer
+    │   ├── Footer.tsx         # Showroom footer, legal links, timings & DPDP disclosures
+    │   ├── CarCard.tsx        # Inventory card with photo switcher, specs & unlock button
+    │   ├── HorizontalCarTrack.tsx # Smooth-scrolling horizontal vehicle showcase
+    │   ├── FilterBar.tsx      # Multi-facet inventory search, price sliders & fuel chips
+    │   ├── UnlockModal.tsx    # Confidential price unlock with Indian mobile verification
+    │   └── ChatbotWidget.tsx  # AI Virtual Auto-Advisor with real DB query integration
+    │
+    └── pages/                 # Full-Page Route Views
+        ├── HomePage.tsx       # Luxury storefront landing page & vehicle fleet showcase
+        ├── CarDetailPage.tsx  # Vehicle dossier, 6-pack specs, inspection matrix & offer form
+        ├── DynamicGalleryPage.tsx # 3D Reel-style showroom with AI Taste Radar
+        ├── BuyerDashboardPage.tsx # Customer self-service hub, offers, enquiries & notifications
+        ├── ComparePage.tsx    # Side-by-side multi-vehicle technical comparison matrix
+        ├── AdminLoginPage.tsx # Dealership command deck login with demo role switcher
+        ├── AdminDashboardPage.tsx # 8-tab CRM: Leads, Dossier, Enquiries, Negotiations, Fleet, Team, Verification, Settings
+        └── LegalPage.tsx      # Privacy Policy, DPDP compliance & Grievance Officer details
+```
+
+================================================================================
+4. ENVIRONMENT CONFIGURATION & INSTALLATION REQUIREMENTS
+================================================================================
+Prerequisites:
+- Node.js version 22.x or later installed (`node -v` >= 22.13.0).
+- npm (Node Package Manager) version 10.x or later.
+- Modern web browser (Chrome, Edge, Safari, Firefox).
+
+Environment Variables (`.env` or system environment):
+The server runs out-of-the-box with zero mandatory environment setup. For production
+customizations, the following environment variables can be defined:
+
+| Variable | Default Value | Description |
+| :--- | :--- | :--- |
+| `PORT` | `3000` | Port on which the HTTP server listens (binds to 0.0.0.0). |
+| `NODE_ENV` | `development` | Set to `production` for compiled static bundle mode. |
+| `SESSION_SECRET` | Auto-generated | Cryptographic salt used for signing admin session tokens. |
+| `SHOWROOM_NAME` | `Cars By Rajat` | Trade name of the automotive dealership. |
+| `SHOWROOM_PHONE`| `+91 98230 11223` | Dealership contact line. |
+| `SHOWROOM_WHATSAPP` | `919823011223` | International WhatsApp number for direct chats. |
+| `SHOWROOM_LOCATION` | `Nagpur, MH` | Physical hub location. |
+
+Installation Steps:
+1. Open terminal in project root directory:
+   ```bash
+   cd c:\Users\bhush\Desktop\Work\neurojanaai\CBR-main\carsbyrajat-standalone
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Type-check the entire codebase:
+   ```bash
+   npm run typecheck
+   ```
+4. Build the production client bundle:
+   ```bash
+   npm run build
+   ```
+5. Launch the application server:
+   ```bash
+   npm run dev    # Or: npm run start
+   ```
+
+================================================================================
+5. DATABASE ARCHITECTURE & SQLITE DATA MODELS
+================================================================================
+The platform uses SQLite 3 via Node.js native `DatabaseSync` (`data.db`).
+The database schema contains 10 core relational tables designed for low overhead,
+high integrity, and seamless schema migrations:
+
+1. `cars` Table (Vehicle Fleet & Inspection Dossiers):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `slug`: TEXT UNIQUE NOT NULL (URL slug, e.g. `hyundai-creta-sx-o-turbo-2021`)
+   - `make`: TEXT NOT NULL (e.g. `Hyundai`, `BMW`, `Mercedes-Benz`, `Toyota`)
+   - `model`: TEXT NOT NULL (e.g. `Creta SX(O) Turbo 1.4 DCT`)
+   - `year`: INTEGER NOT NULL (Manufacturing year)
+   - `km`: INTEGER NOT NULL (Odometer reading in kilometers)
+   - `fuel`: TEXT NOT NULL (`Petrol`, `Diesel`, `Electric`, `Hybrid`, `CNG`)
+   - `tr`: TEXT NOT NULL (`Automatic`, `Manual`)
+   - `tr_detail`: TEXT (e.g. `7-Speed Dual Clutch (DCT) with Paddle Shifters`)
+   - `own`: INTEGER DEFAULT 1 (Owner count: 1st, 2nd, 3rd)
+   - `rto`: TEXT DEFAULT 'MH-31' (Registration authority code)
+   - `ins`: TEXT (Insurance status & expiry date)
+   - `feat`: TEXT (Comma-delimited key vehicle highlights)
+   - `price`: INTEGER NOT NULL (Public sticker price in INR)
+   - `direct`: INTEGER NOT NULL (Unlocked confidential showroom offer price in INR)
+   - `photos`: TEXT NOT NULL (Newline-separated or comma-separated image URLs)
+   - `reel`: TEXT (URL for 9:16 vertical video reel showcase)
+   - `insp_engine`: TEXT (Engine, transmission & fluid test audit)
+   - `insp_tyres`: TEXT (Tyre tread depth & condition report)
+   - `insp_chassis`: TEXT (Structural integrity & underbody assessment)
+   - `insp_elec`: TEXT (Diagnostics, sensors & battery health)
+   - `keys_count`: TEXT (Available original key sets, e.g. `2 Smart Keys`)
+   - `service_hist`: TEXT (Authorized service center record audit)
+   - `dealer_source`: TEXT DEFAULT 'CBR Own Stock' (Acquisition origin)
+   - `dealer_contact`: TEXT (Contact details of acquisition partner)
+   - `dealer_cost`: INTEGER DEFAULT 0 (Internal dealership acquisition cost)
+   - `verification_status`: TEXT DEFAULT 'VERIFIED' (`VERIFIED`, `PENDING`, `AUDITED`)
+   - `verified_by`: TEXT (Name of certified inspector or admin)
+   - `verified_at`: TEXT (ISO timestamp of certification)
+   - `verification_notes`: TEXT (Technical inspector remarks)
+   - `rc_verified`: INTEGER DEFAULT 1 (Original RC Smart Card verified)
+   - `insurance_verified`: INTEGER DEFAULT 1 (Live insurance policy verified)
+   - `puc_verified`: INTEGER DEFAULT 1 (Valid Pollution Certificate verified)
+   - `inspection_verified`: INTEGER DEFAULT 1 (On-site mechanical checklist verified)
+   - `description`: TEXT (Editorial vehicle showcase writeup)
+   - `location`: TEXT (Physical showroom hub where vehicle is parked)
+   - `contact_number`: TEXT (Dedicated vehicle sales representative number)
+
+2. `leads` Table (Customer Pipeline & CRM Records):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `ts`: TEXT DEFAULT (datetime('now')) (Submission timestamp)
+   - `phone`: TEXT NOT NULL (Clean 10-digit Indian mobile number)
+   - `name`: TEXT (Customer full name)
+   - `email`: TEXT (Customer email address)
+   - `car_slug`: TEXT (Slug of car that initiated the lead)
+   - `status`: TEXT DEFAULT 'NEW' (`NEW`, `CONTACTED`, `TEST_DRIVE_SCHEDULED`, `NEGOTIATING`, `DEAL_WON`, `LOST`)
+   - `source`: TEXT DEFAULT 'DIGITAL_SHOWROOM' (Channel: `UNLOCK_MODAL`, `ENQUIRY_DECK`, `NEGOTIATION`, `TEST_DRIVE`, `WALK_IN`)
+   - `budget`: TEXT (Customer purchase budget range)
+   - `exchange`: TEXT (Existing vehicle offered for exchange)
+   - `location`: TEXT DEFAULT 'Nagpur' (Customer residential locality/city)
+   - `requirements`: TEXT (Specific features or financing requirements)
+   - `followup_date`: TEXT (Scheduled follow-up date YYYY-MM-DD)
+   - `assigned_to`: TEXT (Name of assigned sales representative)
+   - `assigned_member_id`: INTEGER (ID of assigned team member)
+   - `verification_status`: TEXT DEFAULT 'VERIFIED'
+   - `engagement_score`: INTEGER DEFAULT 65 (Calculated engagement index 0-100)
+
+3. `lead_interactions` Table (Chronological Customer Follow-up History):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `lead_id`: INTEGER NOT NULL (Foreign key to `leads.id`)
+   - `ts`: TEXT DEFAULT (datetime('now'))
+   - `type`: TEXT NOT NULL (`CALL`, `WHATSAPP`, `TEST_DRIVE`, `IN_PERSON_VISIT`, `NOTE`, `SYSTEM`)
+   - `outcome`: TEXT NOT NULL (Brief summary of discussion outcome)
+   - `customer_response`: TEXT (Customer remarks, feedback, or objections)
+   - `decision_notes`: TEXT (Dealership internal decisions or concessions)
+   - `next_followup_date`: TEXT (Scheduled next action date)
+   - `created_by`: TEXT NOT NULL (Staff member who logged the record)
+
+4. `enquiries` Table (Direct Customer Inquiries):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `car_id`: INTEGER NOT NULL (Foreign key to `cars.id`)
+   - `name`: TEXT NOT NULL (Customer name)
+   - `mobile`: TEXT NOT NULL (Customer contact number)
+   - `location`: TEXT DEFAULT 'Nagpur'
+   - `budget`: TEXT DEFAULT ''
+   - `requirements`: TEXT DEFAULT ''
+   - `source`: TEXT DEFAULT 'Website'
+   - `notes`: TEXT DEFAULT ''
+   - `status`: TEXT DEFAULT 'NEW' (`NEW`, `ASSIGNED`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`)
+   - `assigned_to`: TEXT DEFAULT 'Rajat (Showroom)'
+   - `assigned_member_id`: INTEGER DEFAULT 1
+   - `response_notes`: TEXT DEFAULT '' (Showroom reply visible to customer in Buyer Hub)
+   - `created_at`: TEXT DEFAULT (datetime('now'))
+   - `updated_at`: TEXT DEFAULT (datetime('now'))
+
+5. `negotiations` Table (Vehicle Price Negotiation Threads):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `car_id`: INTEGER NOT NULL (Foreign key to `cars.id`)
+   - `customer_phone`: TEXT NOT NULL
+   - `customer_name`: TEXT NOT NULL
+   - `lead_id`: INTEGER (Foreign key to `leads.id`)
+   - `listed_price`: INTEGER NOT NULL
+   - `current_customer_offer`: INTEGER NOT NULL
+   - `current_vendor_offer`: INTEGER (Showroom counteroffer price)
+   - `status`: TEXT DEFAULT 'PENDING' (`PENDING`, `VENDOR_COUNTERED`, `ACCEPTED`, `REJECTED`, `EXPIRED`)
+   - `assigned_to`: TEXT DEFAULT 'Rajat (Showroom)'
+   - `assigned_member_id`: INTEGER DEFAULT 1
+   - `created_at`: TEXT DEFAULT (datetime('now'))
+   - `updated_at`: TEXT DEFAULT (datetime('now'))
+
+6. `negotiation_messages` Table (Bilateral Discussion History):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `negotiation_id`: INTEGER NOT NULL (Foreign key to `negotiations.id`)
+   - `sender_type`: TEXT NOT NULL (`CUSTOMER`, `VENDOR`, `SYSTEM`)
+   - `sender_name`: TEXT NOT NULL
+   - `offered_price`: INTEGER NOT NULL
+   - `notes`: TEXT DEFAULT ''
+   - `status`: TEXT DEFAULT 'SUBMITTED'
+   - `created_at`: TEXT DEFAULT (datetime('now'))
+
+7. `team_members` Table (Staff Accounts & Role-Based Access Control):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `username`: TEXT UNIQUE NOT NULL
+   - `password_hash`: TEXT NOT NULL (Salted scrypt hash)
+   - `password_salt`: TEXT NOT NULL (Cryptographic hex salt)
+   - `name`: TEXT NOT NULL (Full staff name)
+   - `email`: TEXT
+   - `phone`: TEXT
+   - `role`: TEXT NOT NULL (`ADMIN`, `SALES_MANAGER`, `SALES_REP`, `INVENTORY_MANAGER`)
+   - `responsibilities`: TEXT (e.g. `Luxury SUV fleet & HNI clients`)
+   - `status`: TEXT DEFAULT 'ACTIVE' (`ACTIVE`, `INACTIVE`)
+   - `created_at`: TEXT DEFAULT (datetime('now'))
+   - `last_login`: TEXT
+
+8. `team_activities` Table (Immutable Security & Operational Audit Log):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `user_id`: INTEGER NOT NULL
+   - `user_name`: TEXT NOT NULL
+   - `action`: TEXT NOT NULL (e.g. `LEAD_UPDATE`, `NEGOTIATION_COUNTER`, `CAR_CREATE`)
+   - `target_type`: TEXT NOT NULL (`LEAD`, `NEGOTIATION`, `CAR`, `TEAM_MEMBER`, `ENQUIRY`)
+   - `target_id`: TEXT NOT NULL
+   - `details`: TEXT NOT NULL
+   - `timestamp`: TEXT DEFAULT (datetime('now'))
+
+9. `notifications` Table (Real-Time Customer & Dealership Event Stream):
+   - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
+   - `ts`: TEXT DEFAULT (datetime('now'))
+   - `recipient_type`: TEXT NOT NULL (`CUSTOMER`, `ADMIN`, `TEAM`)
+   - `recipient_target`: TEXT NOT NULL (Phone number or username)
+   - `title`: TEXT NOT NULL
+   - `message`: TEXT NOT NULL
+   - `event_type`: TEXT NOT NULL (`NEGOTIATION_COUNTER`, `DEAL_WON`, `TEST_DRIVE_CONFIRMED`)
+   - `link_url`: TEXT DEFAULT ''
+   - `is_read`: INTEGER DEFAULT 0
+
+10. `settings` Table (Dealership Key-Value Configuration):
+    - `k`: TEXT PRIMARY KEY
+    - `v`: TEXT NOT NULL
+
+================================================================================
+6. COMPLETE REST API SPECIFICATIONS & CONTRACTS
+================================================================================
+
+--------------------------------------------------------------------------------
+6.1. Public Client & Storefront APIs
+--------------------------------------------------------------------------------
+1. `GET /api/settings`
+   - Description: Retrieves public dealership contact numbers, showroom address,
+     timings, and dynamic branding metadata.
+   - Response: `{ ok: true, settings: { showroom_name, phone, whatsapp, ... } }`
+
+2. `GET /api/cars`
+   - Description: Returns the list of certified available vehicles for the public
+     fleet catalogue and horizontal showcase.
+   - Response: `{ ok: true, count: 12, cars: [ { id, slug, make, model, year, km, fuel, tr, price, direct, photos, ... } ] }`
+
+3. `GET /api/cars/:slug`
+   - Description: Retrieves the comprehensive vehicle dossier, certified inspection
+     matrix, dealer verified status, and high-resolution photo gallery for a single vehicle.
+   - Response: `{ ok: true, car: { ... } }`
+
+4. `POST /api/unlock`
+   - Description: Unlocks confidential direct showroom pricing after validating
+     a genuine Indian mobile phone number via heuristic algorithms.
+   - Body: `{ phone: "9823011223", car_slug: "hyundai-creta-sx-o-turbo-2021", name: "Rahul Deshmukh" }`
+   - Response (200): `{ ok: true, direct: 1395000, message: "Showroom confidential price unlocked." }`
+   - Response (400): `{ ok: false, error: "Please enter a valid 10-digit Indian mobile number." }`
+
+5. `POST /api/testdrive`
+   - Description: Schedules a showroom or doorstep test drive with preferred date and time.
+   - Body: `{ car_slug: "...", name: "...", phone: "9823011223", preferred_date: "2026-11-15", preferred_time: "11:00 AM", location_type: "SHOWROOM", notes: "..." }`
+   - Response: `{ ok: true, message: "Test drive booking confirmed." }`
+
+6. `POST /api/enquiry`
+   - Description: Submits a detailed customer enquiry with vehicle preference, budget,
+     exchange details, and custom requirements.
+   - Body: `{ car_id: 1, name: "...", mobile: "9823011223", location: "Nagpur", budget: "12-15 Lakh", requirements: "Automatic Petrol SUV" }`
+   - Response: `{ ok: true, enquiry_id: 6, message: "Enquiry submitted successfully." }`
+
+--------------------------------------------------------------------------------
+6.2. Customer Self-Service & Negotiation APIs
+--------------------------------------------------------------------------------
+7. `POST /api/negotiate`
+   - Description: Submits a customer price purchase offer for an individual vehicle.
+   - Body: `{ car_id: 1, customer_phone: "9823011223", customer_name: "Rahul", offered_price: 1350000, notes: "Ready for immediate token advance" }`
+   - Response: `{ ok: true, negotiation_id: 3, message: "Offer submitted to Rajat Sharma for review." }`
+
+8. `POST /api/negotiate/accept`
+   - Description: Customer accepts the dealership counteroffer or finalized price.
+   - Body: `{ negotiation_id: 3, phone: "9823011223" }`
+   - Response: `{ ok: true, message: "Deal accepted! Showroom desk notified." }`
+
+9. `POST /api/negotiate/counter`
+   - Description: Customer submits a revised counteroffer back to the dealership.
+   - Body: `{ negotiation_id: 3, phone: "9823011223", offered_price: 1375000, notes: "Final offer including RTO" }`
+   - Response: `{ ok: true, message: "Counteroffer submitted." }`
+
+10. `GET /api/customer/dashboard?phone=9823011223`
+    - Description: Returns all active negotiations, submitted enquiries, showroom replies,
+      and unread notifications for a customer's phone number.
+    - Response: `{ ok: true, negotiations: [...], enquiries: [...], notifications: [...] }`
+
+11. `POST /api/notifications/mark-read`
+    - Description: Marks notification items as acknowledged in the customer portal.
+    - Body: `{ id: 12 }` (or omit `id` with `phone` to mark all read)
+    - Response: `{ ok: true }`
+
+12. `POST /api/stop`
+    - Description: DPDP opt-out endpoint; cancels customer follow-ups and purges
+      active automated communications.
+    - Body: `{ phone: "9823011223" }`
+    - Response: `{ ok: true, message: "Phone unregistered from automated follow-ups." }`
+
+--------------------------------------------------------------------------------
+6.3. AI Auto-Advisor Chatbot API
+--------------------------------------------------------------------------------
+13. `POST /api/chat`
+    - Description: Direct database-backed natural language auto-advisor. Analyzes
+      budget queries, fuel preferences, body styles, and vehicle availability in
+      real-time against SQLite `cars` table.
+    - Body: `{ message: "Show me automatic petrol cars under 15 Lakh" }`
+    - Response: `{ ok: true, reply: "We have 3 verified vehicles matching your criteria: ...", matchedCars: [...], showSalesPrompt: false }`
+
+--------------------------------------------------------------------------------
+6.4. Protected Admin Command Deck & CRM APIs
+--------------------------------------------------------------------------------
+All admin endpoints enforce cookie-based authentication (`cbr_admin_token`) and
+verify role permissions via `requireAdminAuth` middleware.
+
+14. `POST /api/admin/auth/login`
+    - Body: `{ username: "admin", password: "password123" }`
+    - Response: Sets signed HttpOnly cookie `cbr_admin_token` and returns `{ ok: true, user: { id, username, name, role } }`
+
+15. `POST /api/admin/auth/logout`
+    - Clears authentication cookie and logs staff session termination.
+
+16. `GET /api/admin/auth/me`
+    - Returns active authenticated staff profile or HTTP 401.
+
+17. `GET /api/admin/dashboard-stats`
+    - Returns live KPI metrics: Total Fleet, Active Leads, Pending Negotiations,
+      Customer Inquiries, Conversion Win Rate, and Total Pipeline Book Value.
+
+18. `GET /api/admin/leads`
+    - Returns leads list with filter parameters (`status`, `search`, `assigned_to`).
+
+19. `GET /api/admin/leads/:id`
+    - Returns complete individual Lead Dossier including communication history,
+      interaction timeline, and calculated Customer Insights (Interest, Preferred Car,
+      Budget, Engagement Index, Negotiation Progress, Conversion Probability).
+
+20. `POST /api/admin/leads`
+    - Manually adds a new customer lead to the CRM.
+
+21. `PUT /api/admin/leads/:id`
+    - Updates lead status, assigned staff member, follow-up date, budget, and notes.
+
+22. `POST /api/admin/leads/:id/interaction`
+    - Records a customer touchpoint (Call, WhatsApp, Test Drive, Meeting) with
+      outcome, customer response, decision notes, and next follow-up schedule.
+
+23. `GET /api/admin/enquiries` & `POST /api/admin/enquiries/:id/respond`
+    - Lists customer inquiries and records dealership response notes visible to customer.
+
+24. `GET /api/admin/negotiations` & `POST /api/admin/negotiations/:id/respond`
+    - Reviews customer price offers and allows showroom to ACCEPT, REJECT, or COUNTER.
+
+25. `GET /api/admin/inventory` & `POST /api/admin/inventory`
+    - Onboards new vehicles or updates existing specifications and inspection checklists.
+
+26. `POST /api/admin/inventory/upload`
+    - Handles local vehicle photo and document file uploads.
+
+27. `GET /api/admin/team` & `POST /api/admin/team` & `PUT /api/admin/team/:id`
+    - Provisions new staff accounts, updates roles, assigns responsibilities, or deactivates.
+
+28. `GET /api/admin/verification` & `POST /api/admin/verification/car/:id`
+    - Manages vehicle compliance: RC Smart Card, Insurance, PUC, and physical inspection audits.
+
+29. `GET /api/admin/activities`
+    - Returns immutable security and operational audit trail with timestamps and actors.
+
+30. `GET /api/admin/settings` & `POST /api/admin/settings`
+    - Updates dealership contact details, WhatsApp routing, and banner notices.
+
+--------------------------------------------------------------------------------
+6.5. Programmatic SEO, OpenGraph & Data Export Endpoints
+--------------------------------------------------------------------------------
+31. `GET /og/:slug.svg`
+    - Dynamically generates high-resolution 1200x630 OpenGraph branded vector card
+      displaying vehicle title, price, odometer, fuel, transmission, and dealership badge.
+
+32. `GET /sitemap.xml`
+    - Programmatic XML sitemap listing root, dynamic gallery, compare page, and all
+      active vehicle slug URLs with last modified timestamps.
+
+33. `GET /robots.txt`
+    - Configures search engine crawl rules, allowing public indexation while disallowing
+      `/admin/` and `/api/admin/` endpoints.
+
+34. `GET /admin/leads.csv` & `GET /admin/leads.xls`
+    - Secure exports of entire CRM lead database in standard CSV and Excel formats.
+
+================================================================================
+7. ROLE-BASED ACCESS CONTROL (RBAC) & SECURITY ARCHITECTURE
+================================================================================
+The platform enforces a 4-tier Role-Based Access Control matrix ensuring that staff
+members operate strictly within their assigned operational responsibilities:
+
+1. ADMIN (Master Dealership Principal):
+   - Full read/write access to all 8 Command Deck modules.
+   - Authority to provision and edit staff accounts, adjust roles, and reset passwords.
+   - Authority to accept or reject price negotiations and approve vehicle inventory.
+   - Access to full security audit logs and system settings.
+   - Default user: `admin`
+
+2. SALES_MANAGER (Lead & Sales Operations Manager):
+   - Full authority over Leads CRM, Customer Inquiries, and Follow-up Scheduler.
+   - Authority to review and counter customer price negotiations.
+   - Authority to reassign leads and enquiries to sales representatives.
+   - View access to vehicle fleet and team performance metrics.
+   - Restricted from creating admin accounts or altering core system settings.
+   - Default user: `rajesh_mgr`
+
+3. SALES_REP (Floor & Relationship Executive):
+   - Direct access to assigned customer leads and enquiries.
+   - Ability to record calls, log follow-up notes, and schedule test drives.
+   - Ability to view inventory dossiers and customer counteroffers.
+   - Restricted from viewing internal dealer acquisition costs (`dealer_cost`).
+   - Restricted from modifying team accounts or deleting CRM records.
+   - Default users: `amit_sales`, `priya_sales`
+
+4. INVENTORY_MANAGER (Fleet & Inspection Specialist):
+   - Dedicated access to Vehicle Inventory CMS and Verification Center.
+   - Authority to add new vehicles, upload high-resolution photos, and set checklists.
+   - Authority to verify RC Smart Cards, Insurance policies, and PUC certificates.
+   - Restricted from modifying customer negotiations or viewing financial lead data.
+   - Default user: `vikram_inv`
+
+Security Mechanisms:
+- Passwords are encrypted using Node.js native `crypto.scryptSync` with unique 16-byte salts.
+- Session tokens are cryptographically signed using HMAC-SHA256 (`node:crypto`).
+- Auth tokens are transmitted exclusively via HttpOnly, SameSite=Lax cookies.
+- Brute-force protection: Failed login attempts trigger automatic exponential delay.
+- Anti-Tamper Audit Logging: All critical actions (lead edits, price counters, staff
+  provisioning) are permanently logged into `team_activities`.
+
+================================================================================
+8. CORE USER WORKFLOWS & FRONT-OF-HOUSE SYSTEMS
+================================================================================
+
+8.1. Modernized Luxury Showroom Landing Page & Mobile-First Navigation Architecture:
+- Visitors landing on `http://localhost:3000` experience an airy, soft-light corporate/automotive showroom aesthetic.
+- Global Modern Navbar & Mobile Architecture:
+  * Brand Identity Zone: Modern vehicle emblem with soft blue border, bold "CARS BY RAJAT" logotype, live green pulse indicator, "NAGPUR HUB" and "MH-31 VERIFIED" micro-chip. Flex-shrink optimized on small mobile screens (<480px) to prevent overflowing or pushing controls offscreen.
+  * Right Action Cluster & Mobile Accessibility Guarantee: Action cluster with `flex-shrink: 0; margin-left: auto;`, guaranteeing the 38px circular mobile hamburger toggle button is 100% visible, accessible, and easily tap-friendly on all mobile screen widths (320px–480px).
+  * Segmented Pill Track (Desktop): Soft sky-tinted track (#F1F5F9) featuring active-state white elevation pills with royal blue text for Showroom Fleet, Scroll (⚡), Buyer Hub (with live notification indicator), and Compare (with active vehicle counter).
+  * Pro Mobile Bottom App Bar: Dedicated fixed bottom touch navigation bar on mobile screens (<769px) with 4 key thumb targets: Fleet, Scroll (with lightning bolt badge), Buyer Hub (with real-time unread alert count), and Compare (with shortlisted vehicle count). Automatically hidden when in full-screen Scroll mode.
+  * Direct Concierge Hub: One-touch Showroom Desk helpline (+91 98230 11223), WhatsApp Concierge CTA (#25D366), and Command Deck staff portal authentication.
+  * Frosted Glass Mobile Drawer: High-performance blur backdrop with quick-access cards and dual action CTAs.
+- Split-Screen Hero Discovery Stage:
+  * Left Hero: Verified trust pills, high-contrast headline with royal blue focus terms, descriptive value proposition, real-time hero search bar with instant model/fuel filtering, pill-shaped primary & secondary CTAs, WhatsApp concierge button, and 4 live metric counters (12+ Available Fleet, 100% Genuine RTO Titles, 0% Broker Markup, 48-Hr Fast RC Transfer) which auto-stack to a 2x2 grid on mobile screens.
+  * Right Minimalist Spotlight Vehicle Stage Card: Clean, uncluttered, Apple/Tesla-inspired automotive card cycling automatically every 5 seconds (with hover-pause and subtle progress line), clean title, single-line specs, bold direct showroom pricing with instant savings pill, minimal status badges, and dual action pills (View Details & Target Price Offer).
+- Dedicated Scroll Feature Section:
+  * Prominent invitation card urging buyers to discover cars dynamically on Scroll mode (/scroll) with touch swipe physics, double-tap liking, and smart interest recommendations.
+- Lifestyle & Category Selector:
+  * 6 quick-filter pills (All Fleet, SUVs, Luxury & Executive, Automatic Gearbox, Diesel Long-Range, Under ₹10 Lakh) with live inventory counts in a momentum-scrollable horizontal track on mobile.
+- Curated Horizontal Spotlight Track:
+  * Swipeable, high-impact featured vehicle showcase carousel with quick price and spec badges.
+- Fleet Filter & Multi-Grid:
+  * Multi-facet filter panel with real-time budget slider, fuel pills, transmission toggles, and sorting controls. Swaps to a clean single-column card grid with 16px padding on mobile.
+- The 6-Point Certified Showroom Inspection Deck:
+  * Visual cards detailing Engine & Compression, Transmission & Gearbox, 100% Non-Accidental Frame, Tyres (70%+ Tread), Chilling AC & Diagnostics, and Clear RTO Ownership Documentation.
+- 4-Step Transparent Purchase Pathway:
+  * Step-by-step buyer journey: Browse & Inspect, Propose Target Price, Wardha Road Test Drive, Fast 48-Hour RC Transfer.
+- Verified Nagpur Buyer Testimonials:
+  * Genuine customer reviews from Ramdaspeth, Civil Lines, and Dharampeth with 5-star ratings and verified buyer badges.
+- Showroom Hub Location & Concierge Card:
+  * Wardha Road hub address, 7-day operating hours, direct phone helpline, Google Maps directions, and showroom consignment facility highlights.
+
+8.2. Confidential Pricing Unlock & Anti-Fake Mobile Heuristic:
+- Direct showroom pricing is protected behind a confidential unlock modal.
+- Customers must enter their name and a genuine 10-digit Indian mobile number.
+- Anti-Fake Validator rejects invalid inputs:
+  * Numbers with fewer or more than 10 digits.
+  * Invalid starting digits (must begin with 6, 7, 8, or 9).
+  * Repetitive sequences (e.g. `9999999999`, `0000000000`, `1234567890`).
+  * Known fictitious dummy series (e.g. `9876543210`, `9123456780`).
+- Upon validation:
+  1. The confidential price is revealed instantly on the client.
+  2. A verified lead record is created in the CRM.
+  3. The phone number is saved to client session, keeping all vehicles unlocked.
+
+8.3. Vehicle Dossier & Certified Showroom Inspection Matrix:
+- Navigating to `/cars/:slug` opens the comprehensive vehicle dossier.
+- Multi-angle gallery with thumbnail switcher and full-screen preview.
+- Vital 6-Pack Specs: Year, Kilometer Reading, Fuel, Transmission, Owners, RTO Hub.
+- Certified Showroom Inspection Checklist:
+  * Engine & Transmission (compression, fluid levels, shift responsiveness)
+  * Chassis & Underbody (structural integrity, suspension bushings)
+  * Tyres & Wheels (tread depth percentage, alloy condition)
+  * Electricals & Electronics (ECU scan, battery voltage, AC cooling)
+  * Key Sets & Service Records (physical keys, authorized service stamps)
+- Interactive EMI Calculator: Dynamic slider allowing customers to calculate monthly
+  installments with custom down payment, loan tenure, and interest rates.
+
+8.4. Scroll Studio: Pro Mobile Vehicle Discovery & AI Taste Radar:
+- Accessible at `/scroll` (and aliases `/dynamic-gallery` or `/gallery`).
+- Professional TikTok/Reels-grade mobile physics:
+  * Full Viewport Edge-to-Edge: Optimized for mobile (`calc(100dvh - 60px)`) with zero interference from chatbots or footers.
+  * Native Touch Gestures: `touch-action: none` and `overscroll-behavior: none` for zero rubber-banding.
+  * Vertical Swipe UP (or press Down Arrow / j): Smooth glide to NEXT vehicle with visual cue.
+  * Vertical Swipe DOWN (or press Up Arrow / k): Smooth glide to PREVIOUS vehicle.
+  * Double-Tap Anywhere on Vehicle: Fires instant like saving car to shortlist with animated beating heart pop burst (`anim-heart-pop`).
+  * Tap Left 40% / Right 40%: Swiftly steps between vehicle exterior and interior photos with synchronized dot indicator.
+  * Slide-Up Specs Bottom Sheet: Horizontal swipe LEFT (or tapping "Specs Sheet" pill) raises an iOS/Android-style bottom sheet with drag handle, mechanic inspection notes, and full vehicle dossier link over a dimmed backdrop.
+  * Floating Ergonomic Action Rail: Thumb-accessible buttons for Shortlist Like, Specs Sheet, Direct WhatsApp Concierge preloaded with vehicle details, and Native OS Share sheet (`navigator.share`).
+  * Subtle Bouncing Swipe Cue: Helps first-time mobile users discover vertical scrolling.
+  * AI Taste Radar: Dynamically scores makes, fuels, and budget preferences in real-time.
+
+8.5. Interactive Price Negotiation & Counteroffer Desk:
+- Customers can submit their purchase price expectations directly from any vehicle page.
+- Fields: Expected Purchase Offer (INR) + Discussion Notes + Contact Mobile.
+- Once submitted, the offer appears in the Dealership Command Deck in real-time.
+- The showroom manager can accept, reject, or submit a counteroffer.
+- Customer receives real-time notification in their Buyer Hub.
+
+8.6. Buyer Self-Service Hub & In-App Notification Stream:
+- Accessible at `/dashboard` by entering the customer's verified mobile number.
+- Features:
+  * Active Negotiations Deck: Displays current status, submitted offer, and showroom counteroffer.
+  * Deal Finalization: Customer can accept the dealer counteroffer with a single click.
+  * Customer Counteroffer: Customer can respond with a revised offer and discussion notes.
+  * Enquiries Status: Shows all customer enquiries along with showroom advisor response notes.
+  * Notification Bell: Unread alerts regarding test drive confirmations, counteroffers, and pricing updates.
+
+================================================================================
+9. ENTERPRISE DEALERSHIP MANAGEMENT & CRM WORKFLOWS
+================================================================================
+Access the Dealership Command Deck at `http://localhost:3000/admin/login`.
+After authenticating, the administrator is presented with 8 integrated CRM modules:
+
+9.1. KPI Dashboard & Live Revenue Analytics:
+- Real-time statistics: Total Available Fleet, Active Leads Pipeline, Pending Negotiations,
+  Customer Enquiries, Win/Conversion Rate, and Estimated Gross Pipeline Value.
+- Instant search bar and quick action drawer.
+
+9.2. Leads Pipeline CRM & CSV / Excel Data Export:
+- Comprehensive lead management table displaying Contact Name, Phone, Vehicle Interest,
+  Budget, Current Pipeline Status, Assigned Representative, and Next Follow-up Date.
+- Status Workflow: `NEW` -> `CONTACTED` -> `TEST_DRIVE_SCHEDULED` -> `NEGOTIATING` -> `DEAL_WON` -> `LOST`.
+- One-click export to CSV (`/admin/leads.csv`) or Excel (`/admin/leads.xls`).
+
+9.3. Individual Lead Dossier, Customer Insights & Follow-up Scheduler:
+- Clicking any lead opens the full Customer Dossier modal with 3 sub-sections:
+  1. Profile & Interaction History: Chronological timeline of all logged calls, WhatsApp chats,
+     test drives, meeting outcomes, and decision notes.
+  2. Follow-up Scheduler: Dedicated form to record interaction outcomes, customer responses,
+     internal decisions, and set the next follow-up calendar reminder.
+  3. Customer Analysis Section: AI-powered customer intelligence displaying:
+     - Vehicle Category Preference & Specific Model Interest.
+     - Customer Budget Range & Flexibility Indicator.
+     - Engagement Index (calculated from visits, unlocks, enquiries, and offers).
+     - Negotiation Progress (original listed price vs customer offer spread).
+     - Conversion Probability (real-time win probability percentage).
+
+9.4. Customer Enquiries Management Deck:
+- Centralized queue of all inbound website inquiries.
+- Allows assigning inquiries to specific sales representatives (`amit_sales`, `priya_sales`).
+- Staff can compose official response notes that sync immediately to the customer's Buyer Hub.
+
+9.5. Vehicle Fleet CMS & Inspection Checkpoint Customizer:
+- Add new vehicles or edit existing fleet inventory.
+- Real-time photo gallery manager supporting local photo uploads (`/public/uploads/`).
+- Customizable inspection checkpoints for Engine, Chassis, Tyres, Electricals, Keys, and Service History.
+- Toggle vehicle status: `AVAILABLE`, `UNDER_INSPECTION`, or `SOLD`.
+
+9.6. Team Management, Staff Provisioning & Permission Matrix:
+- Manage showroom personnel across all 4 RBAC roles.
+- Provision new staff accounts with custom usernames, passwords, contact details, and responsibilities.
+- Modify staff permissions or deactivate departed personnel with immediate effect.
+
+9.7. Vehicle & Customer Verification Center:
+- Verification desk auditing vehicle documentation:
+  * RC Smart Card registration status.
+  * Comprehensive insurance policy validity and expiry date.
+  * PUC (Pollution Under Control) emission test certificate.
+  * Certified 100% Showroom mechanical inspection sign-off.
+- Customer verification desk ensuring mobile authentication compliance.
+
+9.8. Security Audit Trail & Immutable Activity Logs:
+- Immutable activity log capturing all administrative events:
+  * User ID and staff name.
+  * Action type (`CAR_UPDATE`, `LEAD_STATUS`, `NEGOTIATION_COUNTER`, `TEAM_CREATE`).
+  * Target entity and record ID.
+  * Granular change description and timestamp.
+
+9.9. Dealership System Settings & DPDP Compliance:
+- Update dealership trade name, phone numbers, WhatsApp routing, and hub address.
+- Manage announcement bar alerts.
+- Enforce Digital Personal Data Protection (DPDP 2023) 90-day automated cleanup rules.
+
+================================================================================
+10. BUILD, RUN & DEPLOYMENT OPERATIONS
+================================================================================
+
+Development Mode:
+```bash
+npm run dev
+```
+In development mode, Express launches on port 3000 and mounts the Vite development
+server as middleware. This allows instant hot-module replacement (HMR) for all React
+TSX components while simultaneously serving all API routes on the exact same port.
+
+Type-Checking:
+```bash
+npm run typecheck
+```
+Executes `tsc --noEmit` across all server and client TypeScript source files, verifying
+type safety and catching compiler errors prior to compilation.
+
+Production Build:
+```bash
+npm run build
+```
+Executes `vite build`. Bundles and minifies all React TSX components, icons, and CSS into
+the `dist/` directory.
+
+Production Launch:
+```bash
+npm run start
+```
+Runs the compiled platform using Node.js and TSX. The production server serves the
+optimized static assets from `dist/` and runs all API endpoints with zero development overhead.
+
+Running as a Persistent Background Daemon (Windows PowerShell):
+```powershell
+Start-Process -NoNewWindow -FilePath "npx" -ArgumentList "tsx server/index.ts"
+```
+
+Deployment on Linux / Cloud Server (PM2):
+```bash
+# 1. Install production dependencies and build assets
+npm ci
+npm run build
+
+# 2. Start persistent process with PM2
+pm2 start "npx tsx server/index.ts" --name "carsbyrajat"
+pm2 save
+pm2 startup
+```
+
+Nginx Reverse Proxy Configuration (Production):
+```nginx
+server {
+    listen 80;
+    server_name carsbyrajat.in www.carsbyrajat.in;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+================================================================================
+11. PERFORMANCE OPTIMIZATION, CACHING & SCALABILITY
+================================================================================
+- Single-Port Architecture: Eliminates cross-origin CORS preflight latency (`OPTIONS` requests)
+  by serving both SPA assets and REST APIs from `http://localhost:3000`.
+- Native SQLite Synchronous Performance: `node:sqlite` executes in-process memory
+  without socket round-trips, delivering sub-millisecond query execution.
+- Optimized Asset Payload: The complete production client bundle (`dist/assets/`) is under
+  400 kB uncompressed and ~105 kB gzipped.
+- Lazy Asset Resolution: High-resolution images utilize Unsplash CDN dynamic resizing
+  (`w=1000&q=80`) and lazy loading attributes.
+- Database Indexing: Critical search fields (`slug`, `phone`, `car_id`, `lead_id`, `ts`)
+  are indexed for instantaneous lookup across thousands of customer records.
+
+================================================================================
+12. TROUBLESHOOTING & MAINTENANCE PLAYBOOK
+================================================================================
+
+Issue: Port 3000 already in use
+Resolution:
+Find and terminate the process occupying port 3000:
+- Windows:
+  `Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process -Force`
+- Linux:
+  `fuser -k 3000/tcp`
+
+Issue: Administrator login failure
+Resolution:
+Verify credentials. Default accounts:
+- Admin: `admin` / `admin123`
+- Sales Manager: `rajesh_mgr` / `admin123`
+- Sales Rep: `amit_sales` / `admin123`
+- Inventory Manager: `vikram_inv` / `admin123`
+If credentials were modified and lost, reset the password directly via SQLite query:
+```javascript
+const crypto = require('crypto');
+const salt = crypto.randomBytes(16).toString('hex');
+const hash = crypto.scryptSync('admin123', salt, 64).toString('hex');
+db.prepare('UPDATE team_members SET password_hash = ?, password_salt = ? WHERE username = ?').run(hash, salt, 'admin');
+```
+
+Issue: Missing database columns or migration errors
+Resolution:
+The server automatically applies non-destructive `ALTER TABLE` statements in `server/db.ts`
+upon every startup. Columns are created safely with constant defaults without affecting existing data.
+
+Issue: Database Backup & Recovery
+Resolution:
+To backup the showroom database, simply copy `data.db`:
+```bash
+# Windows
+Copy-Item data.db "data_backup_$(Get-Date -Format 'yyyyMMdd_HHmmss').db"
+
+# Linux
+cp data.db data_backup_$(date +%Y%m%d_%H%M%S).db
+```
+
+================================================================================
+END OF GUIDE — CARS BY RAJAT (CBR) ENTERPRISE SYSTEM SPECIFICATION
+================================================================================
+

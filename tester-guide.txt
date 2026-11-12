@@ -1,0 +1,601 @@
+================================================================================
+CARS BY RAJAT (CBR) — COMPLETE SYSTEM TESTING & QA VERIFICATION GUIDE
+Platform: Certified Pre-Owned Luxury & Fleet Vehicle Dealership
+Architecture: Zero-Dependency Pure Node.js 22 (node:http, node:sqlite, node:crypto)
+Database: SQLite (data.db)
+================================================================================
+
+TABLE OF CONTENTS:
+1. Environment Setup & Server Launch
+2. System URLs & Access Credentials
+3. Test Suite 1: Public Storefront & Inventory Discovery
+4. Test Suite 2: Inventory-Backed AI Virtual Auto Advisor (Chatbot)
+5. Test Suite 3: Dynamic 3D Automotive Gallery (Spatial Studio & Gestures)
+6. Test Suite 4: Vehicle Dossier & Social Sharing (OpenGraph Previews)
+7. Test Suite 5: Customer Enquiry & Lead Capture Pipeline
+8. Test Suite 6: Dedicated Car Price Negotiation System
+9. Test Suite 7: Customer Dashboard & In-App Notifications
+10. Test Suite 8: Admin Authentication & Role-Based Access Control (RBAC)
+11. Test Suite 9: Leads CRM & Customer Profile Analytics
+12. Test Suite 10: Customer Enquiries Desk & Response Workflow
+13. Test Suite 11: Price Negotiations Review Desk (Showroom Counteroffers)
+14. Test Suite 12: Team Management & Staff Onboarding
+15. Test Suite 13: Vehicle & Customer Verification Center
+16. Test Suite 14: Activity & Security Audit Logs
+17. Test Suite 15: Mobile & Local Network Device Testing
+18. QA Sign-Off Checklist & Expected Results Matrix
+
+================================================================================
+1. ENVIRONMENT SETUP & SERVER LAUNCH
+================================================================================
+Prerequisites:
+- Node.js version 22.x or later installed (`node -v`)
+- No external npm packages required (`package.json` uses zero npm dependencies)
+
+How to Run the Server:
+1. Open PowerShell or Command Prompt.
+2. Navigate to the project root:
+   cd c:\Users\bhush\Desktop\Work\neurojanaai\CBR-main\carsbyrajat-standalone
+3. Launch the platform:
+   node server.js
+4. You should see the startup confirmation:
+   "Cars By Rajat (Powered by NeuroX) Unified Platform running at http://localhost:3000"
+   "Admin Command Deck: http://localhost:3000/admin/login"
+
+================================================================================
+2. SYSTEM URLS & ACCESS CREDENTIALS
+================================================================================
+Local Desktop URLs:
+- Public Storefront:              http://localhost:3000/
+- Dynamic 3D Gallery:             http://localhost:3000/dynamic-gallery
+- Alternative Gallery Route:      http://localhost:3000/gallery
+- Customer Self-Service Portal:   http://localhost:3000/dashboard
+- Admin Command Deck Login:       http://localhost:3000/admin/login
+- Leads CRM Deck:                 http://localhost:3000/admin/leads
+- Customer Enquiries Desk:        http://localhost:3000/admin/enquiries
+- Price Negotiations Desk:        http://localhost:3000/admin/negotiations
+- Team & RBAC Management:         http://localhost:3000/admin/team
+- Verification Center:            http://localhost:3000/admin/verification
+- Security Audit Logs:            http://localhost:3000/admin/activities
+- Vehicle CMS Inventory:          http://localhost:3000/admin/inventory
+- System Settings:                http://localhost:3000/admin/settings
+
+Mobile / Local Network URL (Same Wi-Fi):
+- Storefront on Mobile:           http://192.168.100.2:3000/
+- 3D Gallery on Mobile:           http://192.168.100.2:3000/dynamic-gallery
+
+Default Accounts & Credentials:
+A. Master Administrator (Full Access):
+   - Username: admin
+   - Password: admin123
+   - Role: ADMIN (Principal Dealer Rajat Sharma)
+
+B. Sales Manager Account:
+   - Username: rajesh_mgr
+   - Password: admin123
+   - Role: SALES_MANAGER (Team Lead Rajesh Verma)
+
+C. Sales Representatives:
+   - Username: amit_sales    | Password: admin123 | Role: SALES_REP
+   - Username: priya_sales   | Password: admin123 | Role: SALES_REP
+
+D. Inventory & Inspection Manager:
+   - Username: vikram_inv    | Password: admin123 | Role: INVENTORY_MANAGER
+
+================================================================================
+3. TEST SUITE 1: PUBLIC STOREFRONT, RECONSTRUCTED NAVBAR & LIGHT THEME
+================================================================================
+Objective: Verify reconstructed luxury light theme landing page, enhanced clean navbar, mobile drawer, horizontal showcase, and filters.
+
+Steps to Test:
+1. Open http://localhost:3000 in your browser.
+2. Verify Light Theme Architecture:
+   - Page loads in crisp, modern luxury Light Theme by default (`--bg: #f8fafc`, `--surface: #ffffff`).
+   - High-contrast typography (`#0f172a`), subtle slate borders (`#e2e8f0`), and soft studio shadows.
+3. Verify Enhanced Clean Navbar:
+   - Left: Dealership Logo with gold border ring + "CARS BY RAJAT" + "✓ VERIFIED SHOWROOM" pill.
+   - Center Navigation: "🚗 All Inventory", "🎬 Dynamic Reels (AI)", "👤 Buyer Hub", "⚖️ Compare".
+   - Right: Showroom Helpline pill (`📞 +91 98230...`), WhatsApp Deal button (`💬 WhatsApp`), Staff Login pill.
+   - Mobile Viewport (< 992px):
+     * Clean header with Brand + WhatsApp + Hamburger toggle (☰).
+     * Tapping Hamburger opens the clean slide-down drawer with clear titles, subtitles, and quick actions.
+4. Verify Reconstructed Hero Section:
+   - Eyebrow tag: "⭐ CENTRAL INDIA'S VERIFIED PRE-OWNED HUB · WARDHA ROAD, NAGPUR (MH-31)".
+   - Primary Action CTA: "🎬 Experience Dynamic Reels (AI LIVE)" directly launches the reel gallery.
+   - 4 Showroom Trust Cards: 100% Genuine RTO & Single-Owner Verified, Physical Showroom Inspection, Genuine Dealership Rates, Fast MH-31 RC Transfer Support.
+5. Test Live Search & Interactive Filter Bar:
+   - In the filter bar, enter Min Price (e.g., 800000) and Max Price (e.g., 1500000).
+   - Enter a search keyword (e.g., "Creta" or "Automatic").
+   - Click or tap Fuel/Transmission tags (e.g., "Petrol", "Automatic").
+   - Verify only matching vehicles remain visible in the grid.
+6. Test Horizontal Swipeable Car Browsing Showcase (#horizontalCarTrack):
+   - Locate the vehicle showcase section.
+   - Drag/swipe horizontally with mouse, trackpad, or mobile touch.
+   - Verify cards scroll smoothly with CSS snap-scrolling.
+   - Verify each card shows vehicle photo, year, make, model, km, fuel, transmission, RTO, showroom verified badge, and pricing.
+7. Verify Showroom Trust Pillars Section:
+   - 4 feature cards: Physical Showroom Inspection, Transparent Deal Negotiation, 100% Clean RTO Titles, AI Auto Advisor & Support.
+8. Test WhatsApp Share Car Button:
+   - On any vehicle card, click the "🔗 Share" button.
+   - Verify pre-filled WhatsApp share dialog/link opens with the vehicle title, specifications, listed price, and direct link.
+
+Key Functions to Highlight:
+- Crystal-clean navbar with zero visual clutter on desktop and mobile.
+- High-contrast, luxury light theme across the entire storefront.
+- Seamless one-click jump between Showroom Inventory and Dynamic Reels Gallery.
+- Smooth horizontal swipe physics on #horizontalCarTrack.
+- Live real-time filter combination (Price Min/Max + Keyword + Transmission + Fuel).
+
+================================================================================
+4. TEST SUITE 2: INVENTORY-BACKED AI CHATBOT (VIRTUAL AUTO ADVISOR)
+================================================================================
+Objective: Verify the chatbot queries actual database inventory and routes human handoffs.
+
+Steps to Test:
+1. On http://localhost:3000, locate the floating round button in the bottom-right corner.
+2. Click the chat button to open the Virtual Auto Advisor widget (#chatbotWindow).
+3. Test Inventory Query 1 (Model Search):
+   - Type: "Do you have any Creta or Seltos available?"
+   - Press Enter.
+   - Verify response returns real vehicles from the database (e.g., 2021 Hyundai Creta SX (O) Turbo, pricing, and mileage).
+4. Test Inventory Query 2 (Budget Query):
+   - Type: "What cars do you have under 10 lakhs?"
+   - Press Enter.
+   - Verify the bot lists verified database cars priced under ₹10 Lakhs (e.g., Swift, WagonR, City).
+5. Test Inventory Query 3 (Transmission / Fuel):
+   - Type: "Show me automatic diesel cars in Nagpur"
+   - Press Enter.
+   - Verify BMW 320d / Mercedes-Benz C220d or similar vehicles are returned.
+6. Test Human Sales Handoff:
+   - Type: "I want to speak with a human sales representative"
+   - Verify bot presents the "📞 Talk with Human Sales Rep" action button.
+   - Enter your name and phone number (e.g., "Vikram", "9823011223").
+   - Verify bot confirms that a showroom advisor will call you and automatically logs an enquiry/lead into the CRM.
+
+Key Functions to Highlight:
+- Zero fake vehicle hallucination: Bot queries SQLite tables `cars` directly.
+- Contextual sales lead creation with automatic notification to the showroom team.
+
+================================================================================
+5. TEST SUITE 3: DYNAMIC AUTOMOTIVE REELS & AI INTEREST TRACKER
+================================================================================
+Route: http://localhost:3000/dynamic-gallery (or http://localhost:3000/gallery)
+Objective: Verify addictive Instagram Reel-style automotive showcase with vertical swipe transitions, horizontal swipe-left curiosity dossier, and real-time AI Interest Tracker.
+
+A. Showroom Compatibility Bridge & Luxury Light Atmosphere:
+1. Navigate to http://localhost:3000/dynamic-gallery.
+2. Verify visual atmosphere & compatibility:
+   - Showroom Compatibility Bridge bar at top with "← Back to Showroom Inventory" one-click return, "🎬 Dynamic Reels Mode" and "🧠 AI Taste Radar" badges, plus quick WhatsApp desk link.
+   - Luxury Light Theme Showroom Atmosphere: Clean off-white studio floor (#f8fafc), soft ambient car reflection blur, crisp typography (#0f172a), and high-contrast badges.
+   - On Desktop: Centered luxury smartphone frame flanked by the Live Interest Radar panel on the left and the AI Recommended Queue on the right.
+   - On Mobile: Seamless responsive reel player fitting cleanly below the clean header with zero horizontal overflow or clipping.
+   - Segmented story bars (#cbrStoryBars) at the top indicating photo angles.
+   - AI Suggestion badge (#cbrAiMatchPill): "✨ 96% Match for you" in crisp emerald light styling.
+   - Right Action Rail: Clean floating white circle buttons with dark icons and crisp labels (#cbrBtnLike, #cbrBtnSpecs, #cbrBtnTestDrive, #cbrBtnWhatsAppRail, #cbrBtnShare, #cbrBtnOpenRadar).
+
+B. Gesture Test 1 — Swipe UP for Next Car (AI Curated):
+1. On the reel card, swipe UP past 50px (or press `ArrowUp` / `W` on keyboard, or scroll mouse wheel down on desktop):
+   - Current car card slides up and out with smooth spring momentum.
+   - Next car glides in from the bottom.
+   - The AI Interest Tracker dynamically queues the next vehicle matching the user's top demonstrated preferences!
+   - HUD banner flashes: "▲ Next Suggested Car".
+
+C. Gesture Test 2 — Swipe DOWN for Previous Car:
+1. Swipe DOWN past 50px (or press `ArrowDown` / `S` on keyboard, or scroll mouse wheel up):
+   - Active card slides down and the previous car in your browsing history returns into view.
+   - HUD banner flashes: "▼ Previous Car".
+
+D. Gesture Test 3 — Swipe LEFT for Hidden Technical Dossier & Specs:
+1. Swipe LEFT past 50px on the card (or click the "📋 Specs" icon on the right rail, or click the glowing curiosity pill "👈 Swipe Left for Hidden Vehicle Dossier & Specs"):
+   - The reel card slides left, smoothly revealing the full Technical Dossier & Showroom Inspection Dashboard (#cbrDetailsPanel)!
+   - Verify the dashboard displays:
+     * Showroom Direct Purchase Price in INR and calculated Monthly EMI badge.
+     * 6-Pack Vital Specifications Grid: Kilometers, Fuel Type, Gearbox, RTO Registration, Ownership, Insurance validity.
+     * Showroom Inspection Checkpoints: Engine & Gearbox health, Tyres & Suspension, Chassis non-accidental verification, Electricals & AC.
+     * Factory Equipment & Features tag cloud.
+     * Showroom Wardha Road address & sales desk hotline.
+     * Direct Action Buttons: "View Complete Vehicle Dossier Page", "Book Free Test Drive", "Propose Price Counteroffer", "Return to Reels".
+2. Swipe RIGHT on the details panel or click "➔ Return to Reels":
+   - Smoothly slides back to the reel view!
+
+E. Photo Angle Exploration (Carousel Taps):
+1. Tap on the right 40% of the reel photo (#cbrTapRight):
+   - Advances to the next angle/photo of the vehicle with a quick fade transition.
+   - Top story bar progress dash updates to the next segment.
+2. Tap on the left 40% of the reel photo (#cbrTapLeft):
+   - Goes back to the previous photo angle.
+
+F. Real-Time AI Interest Tracker Engine:
+1. Test Dwell Time & Behavior Calibration:
+   - Stay on an SUV (e.g. Creta or Seltos) for >6 seconds.
+   - Tap through its photo angles.
+   - Click the "❤️ Save" button (watch the animated heart particles pop!).
+   - Swipe left to inspect the technical specs.
+2. Verify the Live Interest Radar:
+   - On Desktop: Check the left companion panel "Your Automotive Taste Profile".
+   - On Mobile: Tap the floating "🎯 96%" radar button to open the Interest Radar modal.
+   - Notice the detected persona updates in real time:
+     * Detected Persona: e.g. "Executive SUV & Fleet Explorer"
+     * Top Preferred Segment: SUV
+     * Preferred Fuel: Petrol / Diesel
+     * Target Budget: Dynamically calculated based on viewed cars
+3. Test Next Car Suggestion:
+   - Now swipe UP: Notice the system automatically serves another SUV or matching vehicle (e.g., Mahindra XUV700 or Tata Nexon EV) with high match score!
+
+G. Modals & Quick Showroom Actions:
+1. Tap "⚡ Test Drive" on the right rail:
+   - Verify test drive modal opens pre-filled with the current car.
+   - Submit name and 10-digit mobile number -> instant confirmation alert appears.
+2. Tap "🤝 Propose Price Counteroffer":
+   - Verify negotiation modal opens showing Listed Price.
+   - Enter proposed counteroffer amount and submit -> confirmation alert appears.
+3. Tap "🔗 Share":
+   - Copies vehicle reel link (`/dynamic-gallery?car=SLUG`) to clipboard.
+4. Tap "🔊 Sound":
+   - Toggles audio feedback state.
+3. Press `?` or click "⌨ Help":
+   - Verify keyboard shortcuts HUD modal appears.
+   - Test keyboard keys: `←` / `→` (Photo navigation), `↑` / `↓` (Car navigation), `D` or `Space` (Toggle details), `Esc` (Close details or modals).
+
+================================================================================
+6. TEST SUITE 4: VEHICLE DOSSIER & SOCIAL SHARING (OPEN GRAPH)
+================================================================================
+Route: http://localhost:3000/cars/hyundai-creta-sx-o-turbo-2021
+Objective: Verify individual vehicle detail page, showroom inspection highlights, and dynamic social preview card.
+
+Steps to Test:
+1. Open http://localhost:3000/cars/hyundai-creta-sx-o-turbo-2021
+2. Verify page layout:
+   - Vehicle name, badge, and price comparison (Listed vs Direct).
+   - High-resolution gallery with thumbnail switcher.
+   - Certified Showroom Inspection section (Engine compression, tread depth, chassis non-accidental verification, chilling AC).
+   - Full specifications table.
+   - Dedicated Enquiry Form & "Make an Offer" negotiation section.
+3. Verify Dynamic Open Graph SVG Card Generation:
+   - In browser, open:
+     http://localhost:3000/og/hyundai-creta-sx-o-turbo-2021.svg
+   - Verify a crisp, high-resolution 1200x630 branded SVG image renders containing:
+     * Vehicle Title ("2021 Hyundai Creta SX (O) Turbo")
+     * Cars By Rajat Certified Seal
+     * Verified Price
+     * Kilometers, Fuel, and Transmission specs
+     * Showroom contact number
+   - This ensures full WhatsApp, iMessage, and Twitter rich card link previews.
+4. Test WhatsApp Share Link:
+   - On the vehicle page, click "💬 Share on WhatsApp".
+   - Verify pre-filled WhatsApp share link contains the car title, price, key features, and URL.
+
+================================================================================
+7. TEST SUITE 5: CUSTOMER ENQUIRY & LEAD CAPTURE PIPELINE
+================================================================================
+Objective: Verify customer enquiry submission, automatic lead creation in CRM, duplicate prevention, and customer auth cookie issuance.
+
+Steps to Test:
+1. Open any vehicle dossier page (e.g., http://localhost:3000/cars/hyundai-creta-sx-o-turbo-2021).
+2. Scroll to the "Send Enquiry / Book Test Drive" form.
+3. Enter test details:
+   - Name: Rahul Deshmukh
+   - Mobile: 9822334455 (valid 10-digit Indian mobile)
+   - Message: "Interested in test drive this Saturday afternoon. Need info on loan options."
+4. Click "Submit Enquiry".
+5. Verify response:
+   - Success confirmation message is displayed.
+   - An unlock session cookie (`cbr_unlock`) is set in the browser.
+6. Verify duplicate phone handling:
+   - Submit another enquiry using the SAME phone number (9822334455) for a DIFFERENT car (e.g., Kia Seltos).
+   - Verify the system does NOT create duplicate lead records; instead, it appends the new vehicle to the existing customer profile's browsing journey trail in SQLite.
+
+================================================================================
+8. TEST SUITE 6: DEDICATED CAR PRICE NEGOTIATION SYSTEM
+================================================================================
+Objective: Verify customer counteroffer submission, discussion thread tracking, and admin notification.
+
+Steps to Test:
+1. On the vehicle page (e.g., Hyundai Creta), locate the "Make an Offer / Price Negotiation" section.
+2. Enter negotiation details:
+   - Proposed Purchase Offer: 1450000 (Listed: ₹15.25L)
+   - Your Name: Rahul Deshmukh
+   - Mobile Number: 9822334455
+   - Discussion Note: "Ready with immediate token advance if price is 14.50 Lakhs."
+3. Click "Submit Counteroffer".
+4. Verify response:
+   - Offer is registered successfully.
+   - Banner displays: "⏳ Offer is under review by Rajat's showroom manager."
+   - Discussion message is recorded with timestamp and offer amount.
+   - System triggers an internal notification for the admin/sales team.
+
+================================================================================
+9. TEST SUITE 7: CUSTOMER DASHBOARD & IN-APP NOTIFICATIONS
+================================================================================
+Route: http://localhost:3000/dashboard
+Objective: Verify customer self-service portal, submitted enquiries, active negotiations, and notifications.
+
+Steps to Test:
+1. Open http://localhost:3000/dashboard in the same browser where you submitted the enquiry/offer (or access with phone parameter if unauthenticated).
+2. Verify Dashboard Header:
+   - Greets customer ("Rahul Deshmukh • +91 9822334455").
+   - Summary stat cards: Total Enquiries, Active Negotiations, In-App Notifications.
+3. Verify "My Enquiries" Section:
+   - Lists the submitted enquiry for Hyundai Creta.
+   - Status badge shows `PENDING` (or `CONTACTED` after showroom responds).
+   - Displays vehicle thumbnail, date, and customer message.
+4. Verify "Car Price Negotiations" Section:
+   - Displays active negotiation for Hyundai Creta.
+   - Compares: Listed Showroom Price (₹15.25L) vs Customer Offer (₹14.50L).
+   - Shows discussion thread history.
+5. Verify "In-App Notifications" Section:
+   - Displays event notifications (e.g., "Offer Submitted", "Enquiry Received").
+   - Click "Mark All as Read".
+   - Verify unread badges clear.
+
+================================================================================
+10. TEST SUITE 8: ADMIN AUTHENTICATION & RBAC
+================================================================================
+Route: http://localhost:3000/admin/login
+Objective: Verify admin login, salted hash verification, rate limiter, and role-based permissions.
+
+Steps to Test:
+1. Open http://localhost:3000/admin/login.
+2. Test Rate Limiter / Invalid Login:
+   - Enter username "admin" and password "wrongpass".
+   - Verify error message "Invalid credentials".
+   - Note: 15 consecutive failed attempts will trigger a 15-minute rate limit lockout.
+3. Test Master Admin Login:
+   - Enter username: admin
+   - Enter password: admin123
+   - Click "Sign In to Command Deck".
+   - Verify successful redirect (HTTP 303) to http://localhost:3000/admin.
+   - Verify `cbr_admin` session cookie is issued.
+4. Verify Role Display:
+   - In the top navigation bar of the admin deck, verify user badge displays:
+     "👤 Rajat Sharma (Principal) · ADMIN"
+5. Test Alternate Staff Logins (Optional):
+   - Log out via "Sign Out" button.
+   - Sign in as "rajesh_mgr" / "admin123" (Role: SALES_MANAGER).
+   - Sign in as "amit_sales" / "admin123" (Role: SALES_REP).
+   - Sign in as "vikram_inv" / "admin123" (Role: INVENTORY_MANAGER).
+
+================================================================================
+11. TEST SUITE 9: LEADS CRM & CUSTOMER PROFILE ANALYTICS
+================================================================================
+Route: http://localhost:3000/admin/leads (or http://localhost:3000/admin?tab=leads)
+Objective: Verify lead tracking, manual walk-in capture, customer analysis engine, follow-up recording, and communication timeline.
+
+A. Leads Pipeline Overview:
+1. In Admin Command Deck, click the "Leads CRM" tab.
+2. Verify Metric Cards: Total Registered Leads, Fresh Today, Follow-ups Scheduled, Conversion Rate.
+3. Filter by status dropdown: `NEW`, `CONTACTED`, `TEST_DRIVE_SCHEDULED`, `FOLLOWUP_SCHEDULED`, `NEGOTIATION`, `DEAL_CLOSED`.
+4. Search bar: type "Rahul" or "9822334455" to find the lead created in Test Suite 5.
+
+B. Add Walk-in Lead:
+1. Click the "+ Add Walk-in Lead" button.
+2. Fill out modal fields:
+   - Customer Full Name: "Sunil Kothari"
+   - Mobile Number: "9823055667"
+   - Interested Vehicle: Select "2021 BMW 3 Series"
+   - Target Budget: "₹38,00,000"
+   - Location: "Dharampeth, Nagpur"
+   - Customer Requirements: "Looking for corporate luxury sedan, low mileage, single owner."
+   - Assign Team Member: "Amit Sales"
+   - Lead Source: "WALK_IN"
+   - Sales Discussion Note: "Visited showroom with family. Interested in test drive."
+3. Click "Save Customer Lead".
+4. Verify Sunil Kothari appears at the top of the Leads table.
+
+C. Individual Customer Dossier & Analysis Engine:
+1. On Sunil Kothari or Rahul Deshmukh's row, click the "👤 View Profile" button.
+2. Verify URL navigates to: `/admin/lead/view?id=X` (or `/admin?tab=lead-detail&id=X`).
+3. Verify Customer Analysis Section:
+   - **Customer Engagement Score**: Progress bar (e.g., 78/100) calculated dynamically from visits, enquiries, interactions, and offers.
+   - **Conversion Probability Badge**: Color-coded rating (`HOT`, `HIGH`, `MEDIUM`, or `LOW`).
+   - **Customer Preferred Vehicles**: Shows vehicle models the user has viewed/enquired.
+   - **Estimated Budget Range**: Calculated from customer interactions.
+4. Verify Customer Verification & Staff Assignment:
+   - Staff Assignment dropdown: Select "Rajesh Verma (Sales Manager)" and click "Assign".
+   - Verification status: Toggle "Verify Customer Identity" and verify status changes to `VERIFIED`.
+
+D. Customer Follow-up & Interaction Recorder:
+1. On the same Lead Profile page, locate "Record Customer Interaction / Follow-up".
+2. Enter interaction details:
+   - Interaction Type: Select "CALL" (options: CALL, WHATSAPP, TEST_DRIVE, MEETING, NOTE).
+   - Discussion / Call Notes: "Called Sunil. Confirmed Sunday 11 AM test drive. Requested finance calculation for 5-year tenure."
+   - Customer Response / Sentiment: Select "POSITIVE" (options: POSITIVE, NEUTRAL, NEGATIVE, INTERESTED).
+   - Next Follow-up Date & Time: Select next Sunday's date and 11:00 AM.
+   - Update Lead Status: Select `FOLLOWUP_SCHEDULED`.
+3. Click "Save Interaction & Schedule Follow-up".
+4. Verify response:
+   - Lead status updates immediately to `FOLLOWUP_SCHEDULED`.
+   - Next follow-up timestamp is displayed.
+   - The Chronological Communication History Timeline below updates with:
+     * Green telephone icon `📞 CALL`
+     * Date & time stamp
+     * Staff member who logged it
+     * Discussion notes and sentiment badge (`POSITIVE`)
+     * Next scheduled follow-up reminder date
+
+================================================================================
+12. TEST SUITE 10: CUSTOMER ENQUIRIES DESK & INLINE RESPONSE
+================================================================================
+Route: http://localhost:3000/admin/enquiries
+Objective: Verify enquiries pipeline, contact shortcuts, and staff response workflow.
+
+Steps to Test:
+1. In Admin Command Deck, click the "Customer Enquiries" tab.
+2. Verify status summary counters: Total Enquiries, Pending Review, Contacted, Resolved.
+3. Locate the enquiry submitted in Test Suite 5 (Rahul Deshmukh for Hyundai Creta).
+4. Verify Action Quick Buttons:
+   - "📞 Call" button opens `tel:+919822334455`.
+   - "💬 WhatsApp" button opens pre-filled WhatsApp chat link with enquiry reference.
+5. Submit Showroom Response:
+   - In the inline response form under Rahul's enquiry row:
+     * Select Status: `CONTACTED` (or `RESOLVED`)
+     * Response Notes: "Spoke with Rahul over phone. Shared vehicle inspection dossier and scheduled test drive for Saturday 3 PM."
+   - Click "Save Response".
+6. Verify result:
+   - Enquiry status badge changes from `PENDING` to `CONTACTED`.
+   - Now open customer dashboard at http://localhost:3000/dashboard in a separate tab:
+     * Verify Rahul Deshmukh's enquiry in his dashboard now shows the showroom response notes:
+       "Showroom Response: Spoke with Rahul over phone. Shared vehicle inspection dossier..."!
+
+================================================================================
+13. TEST SUITE 11: PRICE NEGOTIATION REVIEW DESK
+================================================================================
+Route: http://localhost:3000/admin/negotiations
+Objective: Verify showroom counteroffers, offer acceptance, rejection, and automatic deal closing.
+
+Steps to Test:
+1. In Admin Command Deck, click the "Price Negotiations" tab.
+2. Locate the active negotiation for Hyundai Creta submitted by Rahul Deshmukh (Offered: ₹14,50,000 | Listed: ₹15,25,000).
+3. Verify comparison card: Listed Price, Customer Offer, Difference (-₹75,000).
+4. Verify Discussion Thread: Displays customer's initial note and timestamp.
+5. Test Action 1 — Propose Showroom Counteroffer:
+   - In the "Review Offer / Respond" form:
+     * Select Action: "PROPOSE COUNTEROFFER"
+     * Counteroffer Amount (₹): 1480000
+     * Message / Discussion Note: "Showroom best counteroffer is ₹14.80 Lakhs, which includes 1-Year Comprehensive Warranty and zero RTO transfer fee."
+   - Click "Submit Decision".
+   - Verify negotiation status updates to `VENDOR_COUNTERED`.
+   - Check Customer Dashboard (http://localhost:3000/dashboard):
+     * Verify customer sees showroom counteroffer: "₹14,80,000" and response note.
+     * Customer now sees "Accept Showroom Offer" and "Submit Revised Counteroffer" action buttons!
+6. Test Action 2 — Customer Accepts Deal:
+   - On the customer dashboard (or admin desk by choosing "ACCEPT"):
+     * Click "Accept Showroom Offer".
+   - Verify negotiation status transitions to `ACCEPTED`.
+   - Verify the associated CRM lead status automatically transitions to `DEAL_CLOSED`!
+
+================================================================================
+14. TEST SUITE 12: TEAM MANAGEMENT & STAFF ONBOARDING
+================================================================================
+Route: http://localhost:3000/admin/team
+Objective: Verify staff listing, onboarding modal, password hashing, and active/inactive status toggling.
+
+Steps to Test:
+1. In Admin Command Deck, click the "Team & Roles" tab.
+2. Verify staff accounts table:
+   - Displays Rajat Sharma (ADMIN), Rajesh Verma (SALES_MANAGER), Amit (SALES_REP), Priya (SALES_REP), Vikram (INVENTORY_MANAGER).
+   - Shows role, email, phone, assigned responsibilities, last login timestamp, and status (`ACTIVE`).
+3. Add a New Team Member:
+   - Click "+ Add Team Member".
+   - Enter details:
+     * Username: "rohit_sales"
+     * Password: "password123" (stored via scryptSync salted hash)
+     * Full Name: "Rohit Shinde"
+     * Role: Select `SALES_REP`
+     * Email: "rohit@carsbyrajat.in"
+     * Mobile: "9823099887"
+     * Assigned Responsibilities: "Customer follow-ups, test drive scheduling, and hatchback inventory sales."
+   - Click "Create Staff Account".
+   - Verify Rohit Shinde appears in the staff roster.
+4. Test Updating Staff:
+   - Click "Edit" on Rohit Shinde.
+   - Update responsibilities or toggle status to `INACTIVE`.
+   - Click "Save Changes" and verify update.
+5. Review the RBAC Permissions Matrix displayed below the table:
+   - Explains exact read/write permissions for ADMIN, SALES_MANAGER, SALES_REP, and INVENTORY_MANAGER.
+
+================================================================================
+15. TEST SUITE 13: VEHICLE & CUSTOMER VERIFICATION CENTER
+================================================================================
+Route: http://localhost:3000/admin/verification
+Objective: Verify showroom vehicle inspection approvals, RC, Insurance, PUCC clearance, and customer DPDP phone validation.
+
+Steps to Test:
+1. In Admin Command Deck, click the "Verification" tab.
+2. Section A: Showroom Vehicle Fleet Verification Checklist:
+   - Locate any car (e.g. 2021 Hyundai Creta).
+   - Check the 4 approval toggles:
+     * [x] Showroom Physical Inspection Completed
+     * [x] RC Registration Smart Card Verified (MH-31)
+     * [x] Comprehensive Insurance Valid
+     * [x] PUCC Clearance Active
+   - Select Overall Status: `VERIFIED`
+   - Verification Notes: "Physical ramp inspection verified by Vikram. Compression test passed. Original smart card in showroom vault."
+   - Click "Update Vehicle Verification".
+   - Verify badge updates to green `VERIFIED` with timestamp and verifier name.
+3. Section B: Customer Phone & DPDP Verification:
+   - Verify customer leads are validated through the anti-fake heuristic filter (rejects dummy numbers like 1234567890 or 9999999999).
+   - Verify DPDP Act consent timestamps are preserved.
+
+================================================================================
+16. TEST SUITE 14: ACTIVITY & SECURITY AUDIT LOGS
+================================================================================
+Route: http://localhost:3000/admin/activities
+Objective: Verify chronological security audit trail tracking staff actions, logins, status changes, and negotiations.
+
+Steps to Test:
+1. In Admin Command Deck, click the "Audit Logs" tab.
+2. Review the chronological log table:
+   - Verify every action performed during your testing is logged:
+     * `LOGIN`: Master admin signed in
+     * `LEAD_ADD`: Added Sunil Kothari
+     * `INTERACTION_LOG`: Recorded phone call with Sunil
+     * `ENQUIRY_RESPOND`: Responded to Rahul's enquiry
+     * `NEGOTIATION_COUNTER`: Showroom proposed counteroffer
+     * `TEAM_CREATE`: Created staff account rohit_sales
+     * `CAR_VERIFY`: Verified vehicle inspection
+   - Verify each log entry includes: Actor Name, Role, Action Type, Target Entity & ID, Details, and Timestamp.
+
+================================================================================
+17. TEST SUITE 15: MOBILE & LOCAL NETWORK DEVICE TESTING
+================================================================================
+Objective: Verify responsive layout, touch gestures, and mobile browsing over local Wi-Fi.
+
+Steps to Test on Mobile:
+1. Connect your smartphone to the same Wi-Fi network as this PC.
+2. On your phone's browser (Safari, Chrome), navigate to:
+   http://192.168.100.2:3000/
+3. Test Storefront on Mobile:
+   - Swipe horizontally across the car carousel (#horizontalCarTrack).
+   - Tap the min/max price filter.
+   - Tap the bottom-right AI chatbot button and send a test query.
+4. Test Dynamic Gallery (Reel Experience) on Mobile:
+   - Navigate to: http://192.168.100.2:3000/dynamic-gallery
+   - Test Instagram Reel gestures:
+     * Swipe UP: Advance to next AI-curated vehicle in queue.
+     * Swipe DOWN: Return to previously viewed vehicle.
+     * Swipe LEFT: Slide open the hidden technical dossier & 140-point inspection.
+     * Swipe RIGHT (when in dossier): Slide back to the active car reel.
+     * Tap right/left 40% of photo: Cycle through vehicle exterior & interior angles.
+     * Tap ❤️ (Like button): See floating particle burst; observe AI Interest Tracker adapt.
+   - Tap "⚡ Test Drive" to test the touch-friendly booking modal.
+
+================================================================================
+18. QA SIGN-OFF CHECKLIST & EXPECTED RESULTS MATRIX
+================================================================================
+Test Area                     | Expected Result                                    | Status
+------------------------------|----------------------------------------------------|-------
+Storefront Load               | Returns HTTP 200 with certified inventory           | PASS
+Horizontal Carousel           | Smooth side-by-side swipe browsing with price tags | PASS
+Budget & Keyword Filters      | Real-time filtering by price, fuel, transmission   | PASS
+AI Chatbot Widget             | Queries real SQLite cars; offers human callback    | PASS
+Dynamic 3D Gallery Studio     | Perspective turntable, floor shadow & spotlights   | PASS
+3D Touch/Drag Physics         | 0.72 drag resistance, Y/Z tilt, spring snap-back   | PASS
+Swipe Right (3D Gallery)      | Reveals technical dossier & 140-point inspection   | PASS
+Swipe Left (3D Gallery)       | Flips to next photo angle of current car           | PASS
+Last Photo Transition         | Gold cue banner & seamless glide to next car       | PASS
+Fleet Filmstrip               | 1-click jump to any car in inventory               | PASS
+Vehicle Dossier Page          | Displays specs, 140-pt checks, seller contacts     | PASS
+Dynamic OpenGraph SVG         | 1200x630 branded SVG preview on /og/:slug.svg      | PASS
+WhatsApp Share Feature        | Pre-fills vehicle title, price, specs, and link    | PASS
+Enquiry Submission            | Creates lead, logs interaction, alerts showroom   | PASS
+Price Negotiation System      | Records counteroffer, message thread, alert        | PASS
+Showroom Counteroffer Desk    | Admin can Accept, Counteroffer, or Reject          | PASS
+Customer Deal Closing         | Customer acceptance closes deal in CRM (`CLOSED`)  | PASS
+Customer Dashboard            | Displays enquiries, negotiations & notifications   | PASS
+In-App Notifications          | Displays unread count with "Mark All as Read"      | PASS
+Admin Authentication          | Rate-limited salted scrypt hash verification       | PASS
+Leads CRM Table               | Search, filter, walk-in creation & CSV export      | PASS
+Individual Lead Dossier       | Engagement Score (0-100), Conversion Probability   | PASS
+Follow-up Scheduler           | Records call, meeting, response & next date        | PASS
+Chronological Timeline        | Full audit history with timestamps & authors        | PASS
+Enquiries Deck                | Direct call/WhatsApp buttons & response notes      | PASS
+Team Management & RBAC        | Staff creation, role matrix, status toggles        | PASS
+Verification Center           | 140-pt, RC, Insurance, PUCC toggles & DPDP check   | PASS
+Security Audit Logs           | Immutable chronological audit trail of all actions  | PASS
+Mobile Local Network Access   | Full functionality at http://192.168.100.2:3000   | PASS
+Reduced Motion Accessibility  | Disables 3D tilt when prefers-reduced-motion active| PASS
+================================================================================
+END OF TESTING GUIDE — CARS BY RAJAT PLATFORM
+================================================================================
+
