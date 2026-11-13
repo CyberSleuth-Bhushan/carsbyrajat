@@ -5,6 +5,15 @@ import type { Car, Lead, TeamMember, TeamActivity, LeadInteraction, Enquiry, Neg
 
 export const db = new DatabaseSync(ENV.DB_PATH);
 
+// Configure SQLite Pragmas for High Concurrency & Lock Resilience
+try {
+  db.exec('PRAGMA journal_mode = WAL;');
+  db.exec('PRAGMA busy_timeout = 5000;');
+  db.exec('PRAGMA synchronous = NORMAL;');
+} catch (pragmaErr) {
+  console.warn('SQLite PRAGMA setup notice:', pragmaErr);
+}
+
 // Initialize Database Tables
 db.exec(`
   CREATE TABLE IF NOT EXISTS cars (
@@ -516,8 +525,12 @@ export function calculateCustomerInsights(leadId: number): CustomerInsights | nu
 
 // DPDP Auto-purge Leads older than 90 days (Unless DEAL_CLOSED)
 export function purgeExpiredLeads(): void {
-  const cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
-  db.prepare("DELETE FROM leads WHERE ts < ? AND status != 'DEAL_CLOSED'").run(cutoff);
+  try {
+    const cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+    db.prepare("DELETE FROM leads WHERE ts < ? AND status != 'DEAL_CLOSED'").run(cutoff);
+  } catch (err) {
+    console.warn('DPDP purgeExpiredLeads skipped due to busy lock:', err);
+  }
 }
 purgeExpiredLeads();
 setInterval(purgeExpiredLeads, 12 * 60 * 60 * 1000).unref();
